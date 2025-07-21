@@ -87,6 +87,7 @@ unsigned short config_frames[4] = {2,9,11,13};
 #include "utils.h"
 #include "x2ap_eNB.h"
 #include "openair1/SCHED_NR/sched_nr.h"
+#include "common/utils/LATSEQ/latseq.h"
 
 pthread_cond_t nfapi_sync_cond;
 pthread_mutex_t nfapi_sync_mutex;
@@ -642,6 +643,7 @@ int main( int argc, char **argv ) {
 
   // start the main threads
   number_of_cards = 1;
+  init_latseq("/tmp/latseq", (uint64_t)(cpuf*1000000000LL));
 
   wait_gNBs();
   int sl_ahead = NFAPI_MODE == NFAPI_MODE_AERIAL ? 0 : 6;
@@ -733,6 +735,9 @@ int main( int argc, char **argv ) {
   printf("TYPE <CTRL-C> TO TERMINATE\n");
   itti_wait_tasks_end(NULL);
   printf("Returned from ITTI signal handler\n");
+
+  // stop latseq
+  close_latseq();
 
   if (RC.nb_nr_L1_inst > 0 || RC.nb_RU > 0)
     stop_L1(0);
