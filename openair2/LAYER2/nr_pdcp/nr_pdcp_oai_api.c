@@ -66,6 +66,7 @@
 #include "pdcp_messages_types.h"
 #include "rlc.h"
 #include "utils.h"
+#include "common/utils/LATSEQ/latseq.h"
 
 #define TODO do { \
     printf("%s:%d:%s: todo\n", __FILE__, __LINE__, __FUNCTION__); \
@@ -399,6 +400,7 @@ bool nr_pdcp_data_ind(const protocol_ctxt_t *const ctxt_pP,
                       const uint32_t *const srcID,
                       const uint32_t *const dstID)
 {
+  LATSEQ_P("U F1 PDCP -> RLC", "SPLIT-2,size=%d", sdu_buffer_size);
   enqueue_pdcp_data_ind(ctxt_pP,
                         srb_flagP,
                         MBMS_flagP,

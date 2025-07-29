@@ -32,6 +32,7 @@
 #include "gtpv1_u_messages_types.h"
 #include "intertask_interface.h"
 #include "rlc.h"
+#include "common/utils/LATSEQ/latseq.h"
 
 typedef struct {
   nr_sdap_entity_t *sdap_entity_llist;
@@ -107,6 +108,7 @@ static bool nr_sdap_tx_entity(nr_sdap_entity_t *entity,
   /*Hardcode DRB ID given from upper layer (ue/enb_tun_read_thread rb_id), it will change if we have SDAP*/
   rb_id_t sdap_drb_id = rb_id;
   int pdcp_ent_has_sdap = 0;
+  LATSEQ_P("U PDCP -> SDAP", "SPLIT-8,size=%d", sdu_buffer_size);
 
   if(sdu_buffer == NULL) {
     LOG_E(SDAP, "%s:%d:%s: NULL sdu_buffer \n", __FILE__, __LINE__, __FUNCTION__);
@@ -220,6 +222,7 @@ static void nr_sdap_rx_entity(nr_sdap_entity_t *entity,
 {
   /* The offset of the SDAP header, it might be 0 if has_sdap_rx is not true in the pdcp entity. */
   int offset=0;
+  LATSEQ_P("D SDAP -> PDCP", "SPLIT-8,size=%d", size);
 
   if (is_gnb) { // gNB
     if (has_sdap_rx) { // Handling the SDAP Header

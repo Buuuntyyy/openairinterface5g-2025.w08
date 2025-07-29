@@ -44,6 +44,7 @@
 #include <stdint.h>
 
 #include <executables/softmodem-common.h>
+#include "common/utils/LATSEQ/latseq.h"
 
 static nr_rlc_ue_manager_t *nr_rlc_ue_manager;
 
@@ -353,7 +354,7 @@ rlc_op_status_t rlc_data_req(const protocol_ctxt_t *const ctxt_pP,
   int ue_id = ctxt_pP->rntiMaybeUEid;
   nr_rlc_ue_t *ue;
   nr_rlc_entity_t *rb;
-
+  LATSEQ_P("D F1 RLC -> PDCP", "SPLIT-2,size=%d",sdu_sizeP);
   LOG_D(RLC, "UE %d srb_flag %d rb_id %ld mui %d confirm %d sdu_size %d MBMS_flag %d\n",
         ue_id, srb_flagP, rb_idP, muiP, confirmP, sdu_sizeP, MBMS_flagP);
 

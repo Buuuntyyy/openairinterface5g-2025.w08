@@ -40,6 +40,7 @@
 #include "nfapi/oai_integration/vendor_ext.h"
 #include "openair2/NR_PHY_INTERFACE/nr_sched_response.h"
 #include "nfapi/oai_integration/nfapi_vnf.h"
+#include "common/utils/LATSEQ/latseq.h"
 
 void handle_nr_nfapi_ssb_pdu(processingData_L1tx_t *msgTx,int frame,int slot,
                              nfapi_nr_dl_tti_request_pdu_t *dl_tti_pdu)
@@ -96,6 +97,7 @@ void nr_schedule_dl_tti_req(PHY_VARS_gNB *gNB, nfapi_nr_dl_tti_request_t *DL_req
   uint8_t number_dl_pdu = DL_req->dl_tti_request_body.nPDUs;
 
   for (int i = 0; i < number_dl_pdu; i++) {
+    LATSEQ_P("D FAPI HIGH-PHY -> LOW-MAC", "SPLIT-6,tti=%d,size=%d", i, sizeof(nfapi_nr_dl_tti_request_t));
     nfapi_nr_dl_tti_request_pdu_t *dl_tti_pdu = &DL_req->dl_tti_request_body.dl_tti_pdu_list[i];
     LOG_D(NR_PHY, "NFAPI: dl_pdu %d : type %d\n", i, dl_tti_pdu->PDUType);
     switch (dl_tti_pdu->PDUType) {
@@ -130,6 +132,7 @@ void nr_schedule_ul_tti_req(PHY_VARS_gNB *gNB, nfapi_nr_ul_tti_request_t *UL_tti
   int slot = UL_tti_req->Slot;
 
   for (int i = 0; i < UL_tti_req->n_pdus; i++) {
+    LATSEQ_P("U FAPI HIGH-PHY -> LOW-MAC", "SPLIT-6,tti=%d,size=%d,structSize=%d", i, pdu_size, sizeof(nfapi_nr_ul_tti_request_t));
     switch (UL_tti_req->pdus_list[i].pdu_type) {
       case NFAPI_NR_UL_CONFIG_PUSCH_PDU_TYPE:
         LOG_D(NR_PHY,
