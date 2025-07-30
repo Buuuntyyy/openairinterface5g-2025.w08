@@ -132,7 +132,7 @@ void nr_schedule_ul_tti_req(PHY_VARS_gNB *gNB, nfapi_nr_ul_tti_request_t *UL_tti
   int slot = UL_tti_req->Slot;
 
   for (int i = 0; i < UL_tti_req->n_pdus; i++) {
-    LATSEQ_P("U FAPI HIGH-PHY -> LOW-MAC", "SPLIT-6,tti=%d,size=%d,structSize=%d", i, UL_tti_req->PDUSize, sizeof(nfapi_nr_ul_tti_request_t));
+    LATSEQ_P("U FAPI HIGH-PHY -> LOW-MAC", "SPLIT-6,tti=%d,structSize=%d", i, sizeof(nfapi_nr_ul_tti_request_t));
     switch (UL_tti_req->pdus_list[i].pdu_type) {
       case NFAPI_NR_UL_CONFIG_PUSCH_PDU_TYPE:
         LOG_D(NR_PHY,
